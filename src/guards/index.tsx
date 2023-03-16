@@ -1,13 +1,13 @@
-import { useAuth } from "../useAuth";
+import { useAuthContext } from "../useAuth";
 
-type Props = { children: React.ReactElement | React.ReactElement[] };
+type Props = { children: React.ReactNode };
 
 export const OnlyAuthorized = ({ children }: Props) => {
-    const { isAuthorized } = useAuth();
-    return isAuthorized ? <>{children}</> : <></>
+    const { isAuthorized } = useAuthContext();
+    return <>{isAuthorized ? children : null}</>;
 }
 
 export const OnlyUnauthorized = ({ children }: Props) => {
-    const { isAuthorized } = useAuth();
-    return !isAuthorized ? <>{children}</> : <></>
+    const { isAuthorized } = useAuthContext();
+    return <>{!isAuthorized ? children : null}</>;
 }

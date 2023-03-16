@@ -3,16 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 
 import { OnlyAuthorized, OnlyUnauthorized } from "./guards";
-import { useAuth } from "./useAuth";
+import { useAuthContext } from "./useAuth";
 
 const App = () => {
-  const { isAuthorized } = useAuth();
+  const { isAuthorized } = useAuthContext();
 
   return (
     <div className="App">
       <h1>isAuthorized: {isAuthorized ? 'true' : 'false'}</h1>
       <OnlyUnauthorized>
-        <>Authorization pending...</>
+        Authorization pending...
       </OnlyUnauthorized>
       <OnlyAuthorized>
         <header className="App-header">

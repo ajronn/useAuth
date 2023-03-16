@@ -1,26 +1,35 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { login } from "../mocks";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { login, LoginModel } from "../mocks";
 
-const AuthContext = createContext({ isAuthorized: false });
+const AuthContext = createContext<LoginModel>({ isAuthorized: false });
 
-type Props = { children: React.ReactElement };
+interface Props { children: React.ReactNode };
 export const AuthProvider = ({ children }: Props) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            await login().then((data) => setIsAuthorized(data.isAuthorized));
+            const data = await login();
+            setIsAuthorized(data.isAuthorized)
         }
 
         fetchData();
 
     }, [])
 
+    const getIsAuthorized = useMemo(() => isAuthorized, [isAuthorized]);
+
     return (
-        <AuthContext.Provider value={{ isAuthorized }}>
+        <AuthContext.Provider value={{ isAuthorized: getIsAuthorized }}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuthContext = () => {
+    const ctx = useContext(AuthContext);
+    if(!ctx) {
+        throw Error;
+    }
+    return ctx;
+};

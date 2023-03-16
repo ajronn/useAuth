@@ -1,9 +1,9 @@
-export type LoginModel = {
+export interface LoginModel {
     isAuthorized: boolean
 }
 
-export const login = (success = true, timeout = 3000) => {
-    return new Promise((resolve: (value: LoginModel) => void, reject) => {
+export const login = (success = true, timeout = 3000): Promise<LoginModel> => {
+    return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (success) {
                 resolve({ isAuthorized: true });
